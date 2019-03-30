@@ -1,4 +1,4 @@
-import { createServer } from '../src'
+import { createServer } from '../../src/httpServer'
 
 const server = createServer({
   directory: __dirname,
@@ -13,6 +13,4 @@ const server = createServer({
   },
 })
 
-server.listen(3000, () =>
-  console.log(`listening on port http://localhost:${3000}`)
-)
+server.listen(3000)
