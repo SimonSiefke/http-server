@@ -41,7 +41,7 @@ export function createServer({
     file: string,
     response: http.ServerResponse
   ) => void
-}) {
+}): any {
   const server = http.createServer(async (request, response) => {
     const absolutePath = getAbsolutePath(directory, request.url)
     /**
@@ -76,7 +76,8 @@ export function createServer({
     response.statusCode = statusCodes.NOT_FOUND
     response.end()
   })
-  server.listen(3000, () =>
-    console.log(`listening on port http://localhost:${3000}`)
-  )
+  return {
+    listen: server.listen,
+    close: server.close,
+  }
 }

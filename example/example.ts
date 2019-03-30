@@ -1,6 +1,6 @@
 import { createServer } from '../src'
 
-createServer({
+const server = createServer({
   directory: __dirname,
   onBeforeSend(absolutePath, file, response) {
     if (!absolutePath.endsWith('.html')) {
@@ -12,3 +12,7 @@ createServer({
     response.end(newFile)
   },
 })
+
+server.listen(3000, () =>
+  console.log(`listening on port http://localhost:${3000}`)
+)
