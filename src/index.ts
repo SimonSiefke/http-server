@@ -41,11 +41,7 @@ export interface ServerOptions {
 }
 
 export interface Server {
-  listen: (
-    port: number,
-    hostname: '127.0.0.0',
-    listeningListener: () => void
-  ) => void
+  listen: (port: number, listeningListener: () => void) => void
   close: () => void
 }
 
@@ -89,8 +85,8 @@ export function createServer({
   })
 
   return {
-    listen(port, hostname, listeningListener) {
-      return server.listen(port, hostname, listeningListener)
+    listen(port, listeningListener) {
+      return server.listen(port, listeningListener)
     },
     close() {
       server.close
