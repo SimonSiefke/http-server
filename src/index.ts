@@ -31,17 +31,28 @@ const isFile = async (path: string) => {
 const getAbsolutePath = (directory, url: string) => path.join(directory, url)
 const getFile = (path: string) => fsReadFile(path, 'utf-8')
 
-export function createServer({
-  directory,
-  onBeforeSend,
-}: {
-  directory: String
+export interface ServerOptions {
+  directory: string
   onBeforeSend: (
     absolutePath: string,
     file: string,
     response: http.ServerResponse
   ) => void
-}): any {
+}
+
+export interface Server {
+  listen: (
+    port: number,
+    hostname: '127.0.0.0',
+    listeningListener: () => void
+  ) => void
+  close: () => void
+}
+
+export function createServer({
+  directory,
+  onBeforeSend,
+}: ServerOptions): Server {
   const server = http.createServer(async (request, response) => {
     const absolutePath = getAbsolutePath(directory, request.url)
     /**
@@ -76,8 +87,13 @@ export function createServer({
     response.statusCode = statusCodes.NOT_FOUND
     response.end()
   })
+
   return {
-    listen: server.listen,
-    close: server.close,
+    listen(port, hostname, listeningListener) {
+      return server.listen(port, hostname, listeningListener)
+    },
+    close() {
+      server.close
+    },
   }
 }
