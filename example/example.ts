@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { createServer } from '.'
+import { createServer } from '../src'
 
 createServer({
   directory: path.join(__dirname, '..'),
