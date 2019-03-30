@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["esnext"],
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "baseUrl": ".",
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"]
+}
