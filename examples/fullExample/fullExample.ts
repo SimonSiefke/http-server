@@ -1,5 +1,9 @@
+import * as fs from 'fs'
+import * as path from 'path'
 import { createServer } from '../../src/httpServer'
 import { createWebsocketServer } from '../../src/webSocketServer'
+
+const injectedCode = fs.readFileSync(path.join(__dirname, 'injectedCode.js'))
 ;(async () => {
   const server = createServer({
     directory: __dirname,
@@ -9,7 +13,10 @@ import { createWebsocketServer } from '../../src/webSocketServer'
         return
       }
       // Inject some code
-      const newFile = file.replace('Hello', 'Goodbye')
+      const newFile = file.replace(
+        '</head>',
+        `<script>${injectedCode}</script></head>`
+      )
       response.end(newFile)
     },
   })
@@ -17,5 +24,9 @@ import { createWebsocketServer } from '../../src/webSocketServer'
   console.log('listening on http://localhost:3000')
   const webSocketServer = createWebsocketServer()
   await webSocketServer.listen(3001)
-  console.log('listening on http://localhost:3001')
+  setInterval(() => {
+    webSocketServer.broadCast({
+      type: 'reload',
+    })
+  }, 2000)
 })()
