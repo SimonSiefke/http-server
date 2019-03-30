@@ -1,14 +1,13 @@
-import * as path from 'path'
 import { createServer } from '../src'
 
 createServer({
-  directory: path.join(__dirname, '..'),
+  directory: __dirname,
   onBeforeSend(absolutePath, file, response) {
     if (!absolutePath.endsWith('.html')) {
       response.end(file)
       return
     }
-    const newFile = file.replace('Hello', 'no')
+    const newFile = file.replace('Hello', 'Goodbye')
     response.end(newFile)
   },
 })
