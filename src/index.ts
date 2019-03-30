@@ -1,7 +1,7 @@
 import * as fs from 'fs'
+import * as http from 'http'
 import * as path from 'path'
 import * as util from 'util'
-import * as http from 'http'
 
 const fsReadFile = util.promisify(fs.readFile)
 const fsStat = util.promisify(fs.stat)
