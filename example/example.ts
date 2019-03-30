@@ -7,6 +7,7 @@ createServer({
       response.end(file)
       return
     }
+    // Inject some code
     const newFile = file.replace('Hello', 'Goodbye')
     response.end(newFile)
   },
