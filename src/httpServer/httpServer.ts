@@ -1,10 +1,7 @@
-import * as fs from 'fs'
 import * as http from 'http'
-import * as path from 'path'
-import * as util from 'util'
-
-const fsReadFile = util.promisify(fs.readFile)
-const fsStat = util.promisify(fs.stat)
+import * as mime from 'mime'
+import { AddressInfo } from 'net'
+import { getAbsolutePath, getFile, isDirectory, isFile } from '../util/util'
 
 enum statusCodes {
   BAD_REQUEST = 400,
@@ -12,28 +9,9 @@ enum statusCodes {
   SERVER_ERROR = 500,
 }
 
-const isDirectory = async (path: string) => {
-  try {
-    return (await fsStat(path)).isDirectory()
-  } catch {
-    return false
-  }
-}
-
-const isFile = async (path: string) => {
-  try {
-    return (await fsStat(path)).isFile()
-  } catch {
-    return false
-  }
-}
-
-const getAbsolutePath = (directory, url: string) => path.join(directory, url)
-const getFile = (path: string) => fsReadFile(path, 'utf-8')
-
 export interface HttpServerOptions {
   directory: string
-  onBeforeSend: (
+  onBeforeSend?: (
     absolutePath: string,
     file: string,
     response: http.ServerResponse
@@ -43,20 +21,26 @@ export interface HttpServerOptions {
 export interface HttpServer {
   listen: (port: number) => void
   close: () => void
+  address: () => string | AddressInfo
 }
 
-export function createServer({
+export function createHttpServer({
   directory,
-  onBeforeSend,
+  onBeforeSend = (absolutePath, file, response) => response.end(file),
 }: HttpServerOptions): HttpServer {
   const server = http.createServer(async (request, response) => {
     const absolutePath = getAbsolutePath(directory, request.url)
     /**
-     * Try to send a file, but send an error if the file doesn't exist
+     * Try to send a file, but send an error if the file doesn't exist.
      */
-    const trySend = async (absolutePath: string) => {
+    // eslint-disable-next-line no-shadow
+    const trySend = async (absolutePath: string): Promise<void> => {
       try {
         const file = await getFile(absolutePath)
+        const type = mime.getType(absolutePath)
+        if (type) {
+          response.setHeader('Content-Type', type)
+        }
         await onBeforeSend(absolutePath, file, response)
         return
       } catch {
@@ -73,10 +57,10 @@ export function createServer({
     if (
       await Promise.all([
         isDirectory(absolutePath),
-        isFile(absolutePath + 'index.html'),
+        isFile(`${absolutePath}index.html`),
       ]).then(values => values.every(value => value))
     ) {
-      await trySend(absolutePath + 'index.html')
+      await trySend(`${absolutePath}index.html`)
       return
     }
     // No file found
@@ -85,11 +69,14 @@ export function createServer({
   })
 
   return {
+    address() {
+      return server.address()
+    },
     listen(port) {
-      return new Promise(resolve => server.listen(port, resolve))
+      server.listen(port)
     },
     close() {
-      server.close
+      server.close()
     },
   }
 }

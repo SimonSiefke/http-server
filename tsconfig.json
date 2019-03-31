@@ -10,7 +10,8 @@
     },
     "baseUrl": ".",
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["jest"]
   },
   "include": ["src/**/*.ts"]
 }

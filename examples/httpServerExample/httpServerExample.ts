@@ -1,6 +1,6 @@
-import { createServer } from '../../src/httpServer'
+import { createHttpServer } from '../../src/httpServer/httpServer'
 
-const server = createServer({
+const server = createHttpServer({
   directory: __dirname,
   onBeforeSend(absolutePath, file, response) {
     if (!absolutePath.endsWith('.html')) {

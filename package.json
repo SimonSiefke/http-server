@@ -2,23 +2,36 @@
   "name": "live-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "dev": "npm run example:fullExample",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "example:fullExample": "nodemon -e js,html,ts --exec ts-node examples/fullExample/fullExample.ts",
     "example:httpServerExample": "nodemon -e html,ts --exec ts-node examples/httpServerExample/httpServerExample.ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/mime": "^2.0.1",
     "@types/node": "^11.12.2",
+    "@types/supertest": "^2.0.7",
     "@types/ws": "^6.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-bitworkers": "^1.21.2",
+    "jest": "^24.5.0",
     "nodemon": "^1.18.10",
+    "prettier": "^1.16.4",
+    "prettier-config-bitworkers": "^1.5.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.1",
     "ts-node": "^8.0.3",
     "typescript": "^3.4.1"
   },
   "dependencies": {
+    "mime": "^2.4.0",
     "ws": "^6.2.1"
   }
 }
