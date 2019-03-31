@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { createServer } from '../../src/httpServer'
 import { createWebsocketServer } from '../../src/webSocketServer'
+import { WebSocketMessage } from './types'
 
 const injectedCode = fs.readFileSync(path.join(__dirname, 'injectedCode.js'))
 ;(async () => {

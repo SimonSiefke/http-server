@@ -1,7 +1,7 @@
 /**
  * Web socket message
  */
-interface WebSocketMessage {
+export interface WebSocketMessage {
   /**
    * The command to execute
    */
