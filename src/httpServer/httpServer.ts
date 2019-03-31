@@ -2,7 +2,7 @@ import * as http from 'http'
 import * as mime from 'mime'
 import { AddressInfo } from 'net'
 import { getAbsolutePath, getFile, isDirectory, isFile } from '@/util/util'
-
+import { parse } from 'url'
 /**
  * Http status codes
  */
@@ -53,7 +53,11 @@ export function createHttpServer({
   onBeforeSend = (absolutePath, file, response) => response.end(file),
 }: HttpServerOptions): HttpServer {
   const server = http.createServer(async (request, response) => {
-    const absolutePath = getAbsolutePath(directory, request.url)
+    /**
+     * The relative url without query parameters.
+     */
+    const url = parse(request.url).pathname
+    const absolutePath = getAbsolutePath(directory, url)
     /**
      * Try to send a file, but send an error if the file doesn't exist.
      */

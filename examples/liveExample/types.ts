@@ -5,5 +5,5 @@ export interface WebSocketMessage {
   /**
    * The command to execute
    */
-  command: 'increment'
+  command: 'refresh.css'
 }

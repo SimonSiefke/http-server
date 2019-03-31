@@ -28,13 +28,14 @@ const isFile = jest
     Promise.resolve(absolutePath.endsWith('.html'))
   )
 
-const getFile = jest.spyOn(util, 'getFile')
+const getFile = jest
+  .spyOn(util, 'getFile')
+  .mockImplementation(() => Promise.resolve('Hello World'))
 
 //
 // ─── TESTS ──────────────────────────────────────────────────────────────────────
 //
 test('should respond with index.html', done => {
-  getFile.mockImplementation(() => Promise.resolve('Hello World'))
   app
     .get('/')
     .expect('Content-Type', 'text/html')
@@ -42,14 +43,20 @@ test('should respond with index.html', done => {
     .expect(200, done)
 })
 
-test('should inject code into index.html', done => {
+test('should ignore query strings', done => {
   getFile.mockImplementation(() => Promise.resolve('Hello World'))
-  app
-    .get('/')
-    .expect('Content-Type', 'text/html')
-    .expect(/hello world/i)
-    .expect(200, done)
+  app.get('/index.html?version=2').expect(/hello world/i, done)
 })
+
+// TODO
+// test('should inject code into index.html', done => {
+//   getFile.mockImplementation(() => Promise.resolve('Hello World'))
+//   app
+//     .get('/')
+//     .expect('Content-Type', 'text/html')
+//     .expect(/hello world/i)
+//     .expect(200, done)
+// })
 
 test('should respond with 404 when file does not exist', done => {
   isFile.mockImplementation(() => Promise.resolve(false))

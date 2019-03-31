@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as chokidar from 'chokidar'
 import { createHttpServer, createWebsocketServer } from '../../src'
 import { WebSocketMessage } from './types'
 
@@ -25,10 +26,10 @@ const injectedCode = fs.readFileSync(path.join(__dirname, 'injectedCode.js'))
   const webSocketServer = createWebsocketServer()
   // @ts-ignore
   await webSocketServer.listen(3001)
-  setInterval(() => {
+  chokidar.watch(path.join(__dirname, './liveExample.css')).on('change', () => {
     const message: WebSocketMessage = {
-      command: 'increment',
+      command: 'refresh.css',
     }
     webSocketServer.broadCast(message)
-  }, 1000)
+  })
 })()

@@ -1,15 +1,25 @@
+/**
+ * Refresh all the css links in the html document.
+ */
+function refreshCSS() {
+  const links = document.querySelectorAll('link')
+  for (const link of links) {
+    if (link.rel === 'stylesheet') {
+      link.href += '?'
+    }
+  }
+}
+
 window.addEventListener('load', () => {
   const socket = new WebSocket('ws://localhost:3001')
-  let count = 0
   socket.addEventListener('message', message => {
     /**
      * @type{import('./types').WebSocketMessage}
      */
     const data = JSON.parse(message.data)
-    console.log(data)
     switch (data.command) {
-      case 'increment':
-        document.body.innerHTML = `${count++}`
+      case 'refresh.css':
+        refreshCSS()
         break
       default:
         throw new Error(`unknown command "${data.command}"`)
