@@ -22,7 +22,7 @@ const newFile = file.replace('Hello', 'Goodbye')
 response.end(newFile)
 ```
 
-The client receives the modified `httpServerExample.html` file
+The client receives the modified `httpServerExample.html`, file which contains
 
 ```html
 <h1>
