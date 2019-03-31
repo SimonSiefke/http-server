@@ -25,8 +25,9 @@ const injectedCode = fs.readFileSync(path.join(__dirname, 'injectedCode.js'))
   const webSocketServer = createWebsocketServer()
   await webSocketServer.listen(3001)
   setInterval(() => {
-    webSocketServer.broadCast({
+    const message: WebSocketMessage = {
       command: 'increment',
-    })
+    }
+    webSocketServer.broadCast(message)
   }, 1000)
 })()
