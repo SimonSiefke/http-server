@@ -4,4 +4,5 @@ module.exports = {
   },
   testRegex: '/src/.*\\.spec\\.ts$', // all files in the src folder that end with .test.ts
   moduleFileExtensions: ['ts', 'js', 'json', 'html'],
+  moduleNameMapper: { '@/(.*)': '<rootDir>/src/$1' },
 }

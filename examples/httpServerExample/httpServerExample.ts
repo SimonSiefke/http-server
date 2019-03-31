@@ -1,4 +1,4 @@
-import { createHttpServer } from '../../src/httpServer/httpServer'
+import { createHttpServer } from '../../src'
 
 const server = createHttpServer({
   directory: __dirname,

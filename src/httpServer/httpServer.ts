@@ -1,9 +1,12 @@
 import * as http from 'http'
 import * as mime from 'mime'
 import { AddressInfo } from 'net'
-import { getAbsolutePath, getFile, isDirectory, isFile } from '../util/util'
+import { getAbsolutePath, getFile, isDirectory, isFile } from '@/util/util'
 
-enum statusCodes {
+/**
+ * Http status codes
+ */
+const enum statusCodes {
   BAD_REQUEST = 400,
   NOT_FOUND = 404,
   SERVER_ERROR = 500,
@@ -19,11 +22,32 @@ export interface HttpServerOptions {
 }
 
 export interface HttpServer {
+  /**
+   * Start the server and listen for incoming requests.
+   */
   listen: (port: number) => void
+  /**
+   * Close the server.
+   */
   close: () => void
+  /**
+   * Get the address for the server. Only useful for testing.
+   */
   address: () => string | AddressInfo
 }
 
+/**
+ * Creates a http server.
+ *
+ * @example
+ * ```js
+ * const server = createHttpServer({
+ *  directory: __dirname
+ * })
+ *
+ * server.listen(3000)
+ * ```
+ */
 export function createHttpServer({
   directory,
   onBeforeSend = (absolutePath, file, response) => response.end(file),

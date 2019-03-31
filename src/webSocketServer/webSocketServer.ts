@@ -1,11 +1,23 @@
 import * as http from 'http'
 import * as WebSocket from 'ws'
-import { HttpServer } from '../httpServer/httpServer'
+import { HttpServer } from '@/httpServer/httpServer'
 
 interface WebSocketServer extends HttpServer {
+  /**
+   * Broadcast a message to all connected clients.
+   */
   broadCast: (message: object) => void
 }
 
+/**
+ * Create a web socket server.
+ *
+ * @example
+ * ```js
+ * const webSocketServer = createWebSocketServer()
+ * webSocketServer.listen(3001)
+ * ```
+ */
 export function createWebsocketServer(): WebSocketServer {
   const server = http.createServer()
   const webSocketServer = new WebSocket.Server({

@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
   let count = 0
   socket.addEventListener('message', message => {
     /**
-     * @type{WebSocketMessage}
+     * @type{import('./types').WebSocketMessage}
      */
     const data = JSON.parse(message.data)
     console.log(data)
