@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node examples/fullExample/fullExample.ts"
+    "dev": "npm run example:fullExample",
+    "example:fullExample": "nodemon -e js,html,ts --exec ts-node examples/fullExample/fullExample.ts",
+    "example:httpServerExample": "nodemon -e html,ts --exec ts-node examples/httpServerExample/httpServerExample.ts"
   },
   "keywords": [],
   "author": "",

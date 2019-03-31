@@ -14,6 +14,7 @@ export function createWebsocketServer(): WebSocketServer {
     server,
   })
   const broadCast = (msg: object) => {
+    // Convert the message to a string because websocket can only send strings, not javascript objects
     const json = JSON.stringify(msg)
     for (const websocket of webSocketServer.clients) {
       websocket.send(json)

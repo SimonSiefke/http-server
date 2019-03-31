@@ -21,12 +21,12 @@ const injectedCode = fs.readFileSync(path.join(__dirname, 'injectedCode.js'))
     },
   })
   await server.listen(3000)
-  console.log('listening on http://localhost:3000')
+  console.log('👉  http://localhost:3000/fullExample.html')
   const webSocketServer = createWebsocketServer()
   await webSocketServer.listen(3001)
   setInterval(() => {
     webSocketServer.broadCast({
-      type: 'reload',
+      command: 'increment',
     })
-  }, 2000)
+  }, 1000)
 })()
